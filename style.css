@@ -1,0 +1,6 @@
+body{font-family:Arial;background:#f1f5f9;margin:0;padding:0;display:flex;justify-content:center;align-items:flex-start;min-height:100vh}
+.container{background:#fff;width:90%;max-width:500px;margin-top:40px;padding:30px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.1);text-align:center}
+.logo{width:120px;margin-bottom:15px}
+input,button{width:100%;padding:12px;margin-top:15px;border-radius:10px;font-size:16px}
+button{background:#0ea5e9;color:#fff;border:0}
+.result-box{margin-top:25px;background:#f8fafc;padding:20px;border-radius:12px;border:1px solid #dbeafe;display:none;text-align:left}

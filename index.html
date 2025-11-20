@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DHIC Result Search</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+<img src="logo.png" class="logo">
+<h2>Darul Hikam Islamic Complex</h2>
+<p class="subtitle">Exam Result Search (By Register Number)</p>
+
+<input type="number" id="regInput" placeholder="Enter Register Number">
+<button onclick="searchResult()">Search</button>
+
+<div class="result-box" id="resultBox">
+<p><b>Name:</b> <span id="rName"></span></p>
+<p><b>Register No:</b> <span id="rReg"></span></p>
+<p><b>Total Marks:</b> <span id="rTotal"></span></p>
+<p><b>Status:</b> <span id="rStatus"></span></p>
+</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
