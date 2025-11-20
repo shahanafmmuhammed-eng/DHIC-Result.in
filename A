@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>DHIC Result Search</title>
+<style>
+  body{font-family:Arial,background:#f0f2f5;margin:0;padding:20px}
+  .wrap{max-width:720px;margin:20px auto;background:#fff;padding:22px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.08)}
+  .logo{width:110px;display:block;margin:0 auto 8px}
+  h1{font-size:22px;margin:6px 0;text-align:center}
+  .subtitle{color:#555;text-align:center;margin-bottom:14px}
+  .controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  input[type=number]{padding:12px;border-radius:8px;border:1px solid #ccc;width:220px;font-size:16px}
+  button{padding:12px 16px;border-radius:8px;border:0;background:#1976d2;color:#fff;cursor:pointer;font-size:15px}
+  button:hover{background:#1565b0}
+  table{width:100%;border-collapse:collapse;margin-top:20px}
+  th,td{padding:10px;border:1px solid #e0e0e0;text-align:left}
+  th{background:#2c3e50;color:#fff}
+  .pass{background:#e6f4ea;color:#0b6623;font-weight:700}
+  .fail{background:#fdecea;color:#a42012;font-weight:700}
+  .note{margin-top:12px;color:#666;font-size:14px}
+  @media(max-width:520px){
+    .controls{flex-direction:column;align-items:center}
+    input[type=number]{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- Make sure logo.png is uploaded to the repo root -->
+  <img src="logo.png" alt="DHIC Logo" class="logo" onerror="this.style.display='none'">
+  <h1>DARUL HIKAM ISLAMIC CENTER — Result Search</h1>
+  <div class="subtitle">Enter your Register Number to view subject-wise marks and Pass/Fail</div>
+
+  <div class="controls">
+    <input type="number" id="reg" placeholder="Register No (1001 - 1012)">
+    <button onclick="search()">Search</button>
+  </div>
+
+  <div id="output"></div>
+  <div class="note">If a student has failed in any subject, the status will show <strong>Fail</strong>.</div>
+</div>
+
+<script>
+/* ==== STUDENT DATA: subject-wise marks (use your real marks here) ==== */
+/* I used values from your handwritten sheet — change if needed */
+const data = {
+ "1001": {name:"SINAN K", hadees:28, fiqh:16, inshaa:13, qh:38},
+ "1002": {name:"FAHIMSHA", hadees:40, fiqh:47, inshaa:25, qh:38},
+ "1003": {name:"JISHAN", hadees:45, fiqh:45, inshaa:25, qh:86},
+ "1004": {name:"SHAMEEM", hadees:30, fiqh:32, inshaa:12, qh:75},
+ "1005": {name:"YASEEN", hadees:34, fiqh:33, inshaa:12, qh:68},
+ "1006": {name:"NALR", hadees:45, fiqh:48, inshaa:25, qh:98},
+ "1007": {name:"SAMEEL", hadees:18, fiqh:30, inshaa:20, qh:55},
+ "1008": {name:"BISHR", hadees:44, fiqh:41, inshaa:19, qh:78},
+ "1009": {name:"ZIYAD", hadees:15, fiqh:15, inshaa:8, qh:45},
+ "1010": {name:"SAYYID MIHJA PMS", hadees:39, fiqh:42, inshaa:21, qh:84},
+ "1011": {name:"FAYIZ", hadees:10, fiqh:10, inshaa:12, qh:46},
+ "1012": {name:"UVAIS", hadees:31, fiqh:40, inshaa:21, qh:96}
+};
+
+/* ---- Passing rule ----
+ You can choose how you decide Pass/Fail.
+ Two common options:
+ A) Per-subject pass mark (e.g., 10 or 33%) — if any subject < passMark => Fail
+ B) Total mark threshold (e.g., total >= 50) => Pass
+
+ We'll use per-subject check by default (subject passMark = 10).
+ You can change passMark variable below.
+*/
+const passMark = 10; // change if your pass mark is different
+
+function computeTotal(s){
+  return Number(s.hadees) + Number(s.fiqh) + Number(s.inshaa) + Number(s.qh);
+}
+
+function computeStatus(s){
+  // Fail if any subject < passMark
+  const subjects = ['hadees','fiqh','inshaa','qh'];
+  for(let sub of subjects){
+    if(Number(s[sub]) < passMark) return 'Fail';
+  }
+  // Or you can use total threshold:
+  // if(computeTotal(s) < 40) return 'Fail';
+  return 'Pass';
+}
+
+function search(){
+  const r = document.getElementById('reg').value.trim();
+  const out = document.getElementById('output');
+  out.innerHTML='';
+
+  if(!r){
+    out.innerHTML = '<p style="color:#d00">Please enter a register number.</p>';
+    return;
+  }
+  if(!data[r]){
+    out.innerHTML = '<p style="color:#d00">No result found for Register No: '+r+'</p>';
+    return;
+  }
+  const s = data[r];
+  const total = computeTotal(s);
+  const status = computeStatus(s);
+  const statusClass = status==='Pass' ? 'pass' : 'fail';
+
+  out.innerHTML = `
+    <table>
+      <tr><th>Register No</th><td>${r}</td></tr>
+      <tr><th>Name</th><td>${s.name}</td></tr>
+      <tr><th>Hadees</th><td>${s.hadees}</td></tr>
+      <tr><th>Fiqh</th><td>${s.fiqh}</td></tr>
+      <tr><th>Inshaa</th><td>${s.inshaa}</td></tr>
+      <tr><th>QH</th><td>${s.qh}</td></tr>
+      <tr><th>Total</th><td>${total}</td></tr>
+      <tr><th>Status</th><td class="${statusClass}">${status}</td></tr>
+    </table>
+  `;
+}
+</script>
+</body>
+</html>logo.png
